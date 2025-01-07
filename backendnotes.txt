@@ -1,0 +1,5 @@
+Entities
+1. Users: user, admin
+2. Campaigns
+4. Donations Tiers / Products
+5. Orders

@@ -38,6 +38,7 @@ router.post('/', UserAuth, async (req, res) => {
         const session = await checkoutService.checkout(req.user.userId);
         res.json(session);
     } catch (error) {
+        console.error(e);
         res.status(500).json({ message: error.message });
     }
 });

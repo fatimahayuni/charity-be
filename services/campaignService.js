@@ -2,6 +2,7 @@ const campaignData = require('../data/campaignData');
 
 
 async function getAllCampaigns() {
+    console.log("campaignService.js");
     return await campaignData.getAllCampaigns();
 }
 

@@ -2,8 +2,11 @@ const express = require('express');
 const router = express.Router();
 const campaignService = require('../services/campaignService');
 
+
+
 // GET all campaigns
 router.get('/', async (req, res) => {
+
     try {
         const campaigns = await campaignService.getAllCampaigns();
         res.json(campaigns);

@@ -9,7 +9,13 @@ Fetches all cart contents for a specific user.
 */
 
 async function getCartContents(userId) {
-    return await cartData.getCartContents(userId);
+    console.log("2. cartService.js: dalam getCartContents function")
+    try {
+        return await cartData.getCartContents(userId);
+    } catch (error) {
+        console.error("Error fetching cart contents:", error.message);
+        throw error; // Re-throwing to propagate to the route
+    }
 }
 
 /*

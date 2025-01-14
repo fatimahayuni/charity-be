@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
-    console.log("Received Token:", token);
 
     if (token == null) return res.sendStatus(401);
 
@@ -14,6 +13,7 @@ function authenticateToken(req, res, next) {
             return res.sendStatus(403); // Invalid or expired token
         }
         req.user = user; // Token is valid, attach the user to the request
+
         next();
     });
 }

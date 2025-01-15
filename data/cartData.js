@@ -31,9 +31,10 @@ async function updateCart(userId, cartItems) {
         // Insert each item in the new cart (each campaign the user wants to donate to)
         for (const item of cartItems) {
             await connection.query(
-                'INSERT INTO cart_items (user_id, campaign_id, donation_amount, quantity) VALUES (?, ?, ?, ?)',
-                [userId, item.campaign_id, item.donation_amount, item.quantity]
+                'INSERT INTO cart_items (user_id, campaign_id, added_at, donation_amount) VALUES (?, ?, NOW(), ?)',
+                [userId, item.campaign_id, item.donation_amount]
             );
+
         }
 
         await connection.commit();

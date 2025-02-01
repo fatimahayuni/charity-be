@@ -1,10 +1,12 @@
 const express = require('express');
+
 const cors = require('cors');
 require('dotenv').config();
 const pool = require('./database');
 
 // comes after dotenv
 const campaignsRouter = require('./routes/campaigns');
+
 const userRouter = require('./routes/users');
 const cartRouter = require('./routes/cart');
 const checkoutRouter = require('./routes/checkout');
@@ -14,7 +16,7 @@ const app = express();
 
 // Middlewares
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://localhost:5174']  // Allow requests from your frontend
+    origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5176', 'http://localhost:5177']  // Allow requests from your frontend
 }));
 
 app.use(express.json());
@@ -30,8 +32,9 @@ app.get('/', (req, res) => {
     res.json({ message: "Welcome to our e-commerce API" });
 });
 
+
 // Start the server
 const PORT = process.env.PORT || 3000;
-console.log("Server started")
+console.log(`Server started on port ${PORT}`);
 app.listen(PORT, () => {
 });

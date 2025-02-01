@@ -1,9 +1,12 @@
 const campaignData = require('../data/campaignData');
 
-
 async function getAllCampaigns() {
 
-    return await campaignData.getAllCampaigns();
+    // Fetch campaigns
+    const campaigns = await campaignData.getAllCampaigns();
+
+    // Return the campaigns
+    return campaigns;
 }
 
 async function getCampaignById(id) {
@@ -15,7 +18,18 @@ async function getCampaignById(id) {
     return campaign;
 }
 
+async function createCampaign(campaignDetails) {
+    try {
+        const newCampaign = await campaignData.createCampaign(campaignDetails);
+        return newCampaign;
+    } catch (error) {
+        console.error('Error creating campaign:', error);
+        throw new Error('Failed to create campaign');
+    }
+}
+
 module.exports = {
     getAllCampaigns,
-    getCampaignById
+    getCampaignById,
+    createCampaign
 };

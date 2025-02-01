@@ -9,9 +9,14 @@ Fetches all cart contents for a specific user.
 */
 
 async function getCartContents(userId) {
-    console.log("2. cartService.js: dalam getCartContents function")
     try {
-        return await cartData.getCartContents(userId);
+        const cartContents = await cartData.getCartContents(userId);
+
+        // Log the cart contents for debugging
+        console.log("Fetched Cart Contents:", cartContents);
+
+        return cartContents;
+
     } catch (error) {
         console.error("Error fetching cart contents:", error.message);
         throw error; // Re-throwing to propagate to the route

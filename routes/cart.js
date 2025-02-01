@@ -8,11 +8,12 @@ router.use(authenticateToken);
 
 // GET cart contents
 router.get('/', async (req, res) => {
-    console.log("1. cart.js: Received GET request to fetch cart contents");
 
     try {
         const cartContents = await cartService.getCartContents(req.user.userId);
-        console.log("cart.js: cartContents ", cartContents)
+        // Log cart contents to verify
+        console.log("Cart Contents:", cartContents);
+
         res.json(cartContents);
     } catch (error) {
         res.status(500).json({ message: error.message });

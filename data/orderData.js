@@ -9,26 +9,33 @@ async function getOrdersByUserId(userId) {
 }
 
 // Create a new order with donations to various campaigns
+// Create a new order with donations to various campaigns
 async function createOrder(userId, orderItems) {
     const connection = await pool.getConnection();
     try {
         await connection.beginTransaction();
 
-        // Calculate the total order amount by summing the donation amounts for each item
-        const total = orderItems.reduce((sum, item) => sum + item.item_amount, 0);
+        // Debugging: Log the entire orderItems to see all the values
+        console.log('orderItems:', orderItems);
 
-        // Insert order data into the orders table
+        // Calculate the total order amount by summing the donation amounts for each item
+        const total_donation_amount = orderItems.reduce((sum, item) => sum + item.donation_amount, 0);
+
+        // Get the pledge_id from the first item (assuming all items have the same pledge_id)
+        const pledgeId = orderItems[0].pledge_id;
+
+        // Insert order data into the orders table, including pledge_id
         const [orderResult] = await connection.query(
-            "INSERT INTO orders (user_id, total) VALUES (?, ?)",
-            [userId, total]
+            "INSERT INTO orders (user_id, total_donation_amount, pledge_id) VALUES (?, ?, ?)",
+            [userId, total_donation_amount, pledgeId]
         );
         const orderId = orderResult.insertId;
 
         // Insert order items (donations to different campaigns) into the order_items table
         for (const item of orderItems) {
             await connection.query(
-                'INSERT INTO order_items (order_id, campaign_id, pledge_id, item_amount) VALUES (?, ?, ?, ?)',
-                [orderId, item.campaign_id, item.pledge_id, item.item_amount]
+                'INSERT INTO order_items (order_id, campaign_id, pledge_id, donation_amount) VALUES (?, ?, ?, ?)',
+                [orderId, item.campaign_id, item.pledge_id, item.donation_amount]
             );
         }
 
@@ -36,11 +43,13 @@ async function createOrder(userId, orderItems) {
         return orderId;
     } catch (error) {
         await connection.rollback();
+        console.error('Error creating order:', error);
         throw error;
     } finally {
         connection.release();
     }
 }
+
 
 // Fetch detailed information about a specific order (including campaign and pledge details)
 async function getOrderDetails(orderId) {

@@ -7,7 +7,7 @@ const pool = require('../database');
 async function getCartContents(userId) {
     const [rows] = await pool.query(
         `SELECT c.id, c.campaign_id, cam.title AS campaign_title, cam.image_url AS image_url, 
-        CAST(c.donation_amount AS DECIMAL(10, 2)) AS donation_amount, c.added_at 
+        CAST(c.donation_amount AS DECIMAL(10, 2)) AS donation_amount, c.added_at, c.pledge_id
         FROM cart_items c 
         JOIN campaigns cam ON c.campaign_id = cam.campaign_id 
         WHERE c.user_id = ?`,
@@ -37,8 +37,8 @@ async function updateCart(userId, cartItems) {
         // Insert each item in the new cart (each campaign the user wants to donate to)
         for (const item of cartItems) {
             await connection.query(
-                'INSERT INTO cart_items (user_id, campaign_id, added_at, donation_amount) VALUES (?, ?, NOW(), ?)',
-                [userId, item.campaign_id, item.donation_amount]
+                'INSERT INTO cart_items (user_id, campaign_id, added_at, donation_amount, pledge_id) VALUES (?, ?, NOW(), ?, ?)',
+                [userId, item.campaign_id, item.donation_amount, item.pledge_id]
             );
 
         }

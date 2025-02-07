@@ -12,9 +12,6 @@ async function getCartContents(userId) {
     try {
         const cartContents = await cartData.getCartContents(userId);
 
-        // Log the cart contents for debugging
-        console.log("Fetched Cart Contents:", cartContents);
-
         return cartContents;
 
     } catch (error) {

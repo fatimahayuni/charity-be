@@ -36,6 +36,7 @@ async function createOrder(userId, orderItems) {
  * @returns {Promise<void>} - Confirmation of the update.
  */
 async function updateOrderSessionId(orderId, sessionId) {
+    console.log("orderId before try block", orderId) //todo problem starts here
     try {
         return await orderData.updateOrderSessionId(orderId, sessionId);
     } catch (error) {
@@ -73,10 +74,20 @@ async function updateOrderStatus(orderId, status) {
     }
 }
 
+async function getOrderById(orderId) {
+    try {
+        return await orderData.getOrderDetails(orderId);  // Assuming this fetches the order by ID
+    } catch (error) {
+        console.error(`Error fetching order details for orderId ${orderId}:`, error);
+        throw new Error('Failed to fetch order details.');
+    }
+}
+
 module.exports = {
     getOrdersByUserId,
     createOrder,
     updateOrderSessionId,
     getOrderDetails,
-    updateOrderStatus
+    updateOrderStatus,
+    getOrderById
 };

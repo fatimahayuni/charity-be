@@ -20,7 +20,6 @@ async function getCartContents(userId) {
         donation_amount: parseFloat(row.donation_amount)
     }));
 
-    console.log("Formatted rows (donation amount as number):", formattedRows);
     return formattedRows;
 }
 

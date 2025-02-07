@@ -11,8 +11,6 @@ router.get('/', async (req, res) => {
 
     try {
         const cartContents = await cartService.getCartContents(req.user.userId);
-        // Log cart contents to verify
-        console.log("Cart Contents:", cartContents);
 
         res.json(cartContents);
     } catch (error) {

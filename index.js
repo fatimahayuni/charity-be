@@ -17,7 +17,7 @@ app.use('/api/checkout/webhook', express.raw({ type: 'application/json' }));
 
 // Apply CORS middlewares
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5176', 'http://localhost:5177']  // Allow requests from your frontend
+    origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5176', 'http://localhost:5177', 'http://localhost:5178']  // Allow requests from your frontend
 }));
 
 

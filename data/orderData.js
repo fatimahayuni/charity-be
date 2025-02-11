@@ -80,6 +80,7 @@ async function getOrderDetails(orderId) {
 }
 
 // Update the status of an order (e.g., from created to processing, etc.)
+//todo haris said updateOrderStatus and updateOrderSessionId could be in one function. 
 async function updateOrderStatus(orderId, status) {
     // Validate status before updating
     if (!['created', 'processing', 'completed', 'failed', 'cancelled'].includes(status)) {

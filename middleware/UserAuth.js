@@ -1,11 +1,12 @@
 const jwt = require('jsonwebtoken');
 
 function authenticateToken(req, res, next) {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
+    // const authHeader = req.headers['authorization'];
+    const token = req.cookies.jwt;
 
-    if (token == null) return res.sendStatus(401);
-
+    if (!token) {
+        return res.status(401).json({ message: "Unauthorized: No token provided" });
+    }
 
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
         if (err) {
@@ -14,7 +15,6 @@ function authenticateToken(req, res, next) {
         }
         req.user = user
         console.log(`Request to: ${req.path}`);
-
         console.log("user in UserAuth.js: ", user); // Token is valid, attach the user to the request
 
         next();

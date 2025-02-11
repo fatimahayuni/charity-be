@@ -70,10 +70,46 @@ router.post('/login', async (req, res) => {
 
         const token = jwt.sign({ userId: user.user_id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
+        // Store the token in an HTTP-only cookie
+        res.cookie("jwt", token, {
+            httpOnly: true,  // Makes the cookie inaccessible to JavaScript (important for security)
+            secure: true,
+            sameSite: "Lax",  // Protects against CSRF attacks
+            maxAge: 7 * 24 * 60 * 60 * 1000,  // Cookie expiration (7 days)
+        });
+
         res.json({ message: "Login successful", token });
     } catch (error) {
         res.status(401).json({ message: error.message });
     }
 });
+
+// ✅ Check if user is authenticated (auth status)
+router.get('/auth-status', (req, res) => {
+    const token = req.cookies.jwt; // Retrieve JWT from cookies
+
+    if (!token) {
+        return res.json({ isAuthenticated: false });
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        if (err) {
+            return res.json({ isAuthenticated: false });
+        }
+
+        res.json({ isAuthenticated: true, user });
+    });
+});
+
+// ✅ Logout route to clear JWT cookie
+router.post('/logout', (req, res) => {
+    res.clearCookie('jwt', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'Strict'
+    });
+    res.json({ message: 'Logged out successfully' });
+});
+
 
 module.exports = router;

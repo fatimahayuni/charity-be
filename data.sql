@@ -38,5 +38,5 @@ INSERT INTO cart_items (user_id, campaign_id, pledge_id) VALUES
 -- Insert sample data into the orders table
 INSERT INTO orders (user_id, donor_type, campaign_id, pledge_id, order_amount, receipt_url, status) VALUES
 (1, 'individual', 1, 1, 50.00, 'https://example.com/receipt1.pdf', 'completed'),
-(2, 'corporate', 3, 3, 250.00, 'https://example.com/receipt2.pdf', 'pending'),
+(2, 'corporate', 3, 3, 250.00, 'https://example.com/receipt2.pdf', 'completed'),
 (3, 'individual', 2, 2, 100.00, 'https://example.com/receipt3.pdf', 'completed');

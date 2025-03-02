@@ -23,6 +23,7 @@ router.get('/', async (req, res) => {
 
 // PUT bulk update cart
 router.put('/', async (req, res) => {
+    console.log("inside cart.js before try block.")
     try {
         const cartItems = req.body.cartItems;
         await cartService.updateCart(req.user.userId, cartItems);
@@ -34,6 +35,8 @@ router.put('/', async (req, res) => {
 
 // POST request to add a new item to the cart
 router.post('/', async (req, res) => {
+    console.log('Received data for cart item:', req.body); // Log the data received in the request body
+
     const { campaign_id, donation_amount, pledge_id, added_at } = req.body;
     const user_id = req.user.userId;  // This will come from the authenticated user
     try {

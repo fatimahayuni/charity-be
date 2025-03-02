@@ -14,8 +14,6 @@ function authenticateToken(req, res, next) {
             return res.sendStatus(403); // Invalid or expired token
         }
         req.user = user
-        console.log(`Request to: ${req.path}`);
-        console.log("user in UserAuth.js: ", user); // Token is valid, attach the user to the request
 
         next();
     });

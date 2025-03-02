@@ -85,21 +85,21 @@ router.post('/login', async (req, res) => {
 });
 
 // ✅ Check if user is authenticated (auth status)
-router.get('/auth-status', (req, res) => {
-    const token = req.cookies.jwt; // Retrieve JWT from cookies
+// router.get('/auth-status', (req, res) => {
+//     const token = req.cookies.jwt; // Retrieve JWT from cookies
 
-    if (!token) {
-        return res.json({ isAuthenticated: false });
-    }
+//     if (!token) {
+//         return res.json({ isAuthenticated: false });
+//     }
 
-    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-        if (err) {
-            return res.json({ isAuthenticated: false });
-        }
+//     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+//         if (err) {
+//             return res.json({ isAuthenticated: false });
+//         }
 
-        res.json({ isAuthenticated: true, user });
-    });
-});
+//         res.json({ isAuthenticated: true, user });
+//     });
+// });
 
 // ✅ Logout route to clear JWT cookie
 router.post('/logout', (req, res) => {

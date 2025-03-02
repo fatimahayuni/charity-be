@@ -11,7 +11,7 @@ Fetches all cart contents for a specific user.
 async function getCartContents(userId) {
     try {
         const cartContents = await cartData.getCartContents(userId);
-
+        // console.log("cartContents", cartContents)
         return cartContents;
 
     } catch (error) {
@@ -27,9 +27,12 @@ This function performs a bulk update, replacing the cart contents with the provi
 @param {Array} cartItems - Array of items to update in the cart
 */
 async function updateCart(userId, cartItems) {
+    console.log("inside cartService")
     if (!Array.isArray(cartItems)) {
         throw new Error('Cart items must be an array');
     }
+    console.log("Cart items before updating:", JSON.stringify(cartItems, null, 2)); // Debugging log
+
     await cartData.updateCart(userId, cartItems);
 }
 

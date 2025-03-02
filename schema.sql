@@ -91,7 +91,7 @@ CREATE TABLE orders (
     order_amount DECIMAL(10, 2) NOT NULL, -- Total order amount
     order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     receipt_url VARCHAR(255),             -- URL for receipt (optional)
-    status ENUM('pending', 'completed', 'failed') DEFAULT 'pending', -- Status of the order
+    status ENUM('completed', 'failed'), -- Status of the order
     FOREIGN KEY (user_id) REFERENCES users(user_id),
     FOREIGN KEY (campaign_id) REFERENCES campaigns(campaign_id) ON DELETE CASCADE,
     FOREIGN KEY (pledge_id) REFERENCES pledge_amounts(pledge_id),

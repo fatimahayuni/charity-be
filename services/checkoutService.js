@@ -1,9 +1,10 @@
 // make use of orderService and stripeService to check out a shopping cart
 const cartService = require('./cartService');
 const orderService = require('./orderService');
+const orderData = require('../data/orderData')
 const stripeService = require('./stripeService');
 
-async function checkout(userId, orderItems) {
+async function checkout(userId, orderItems, orderId) {
     try {
         // Step 1: Get the content of the user's shopping cart
         const cartItems = await cartService.getCartContents(userId);
@@ -14,16 +15,13 @@ async function checkout(userId, orderItems) {
         }
 
         // Extract campaignId from orderItems (assuming it's the same for all items)
-        const campaignId = cartItems[0].campaign_id; // Or however you extract it
-
-        // create the order first and save into the db
-        const orderId = await orderService.createOrder(userId, cartItems);
+        const campaignId = cartItems[0].campaign_id;
 
         // create the checkout session using the order details
-        const session = await stripeService.createCheckoutSession(userId, cartItems, campaignId);
+        const session = await stripeService.createCheckoutSession(userId, orderItems, campaignId, orderId);
 
         // save the session id into the order
-        await orderService.updateOrderSessionId(orderId, session.id);
+        await orderData.updateOrderSessionId(orderId, session.id);
 
         return session;
     } catch (error) {

@@ -35,6 +35,8 @@ async function updateCart(userId, cartItems) {
 
         // Insert each item in the new cart (each campaign the user wants to donate to)
         for (const item of cartItems) {
+            console.log("Inserting item:", JSON.stringify(item, null, 2)); // 🔍 Debugging log
+
             await connection.query(
                 'INSERT INTO cart_items (user_id, campaign_id, added_at, donation_amount, pledge_id) VALUES (?, ?, NOW(), ?, ?)',
                 [userId, item.campaign_id, item.donation_amount, item.pledge_id]

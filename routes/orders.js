@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const orderService = require('../services/orderService'); // Assuming this exists to handle order data
+const orderService = require('../services/orderService');
+const campaignService = require('../services/campaignService'); // Assuming this service exists
 
 // Get order by orderId
 router.get('/:orderId', async (req, res) => {
@@ -8,11 +9,13 @@ router.get('/:orderId', async (req, res) => {
         // Call the service to get order details
         const order = await orderService.getOrderDetails(req.params.orderId);
 
-        // Log the order data to check what is returned
-        console.log('Order Data:', order);
-
         // Check if order exists and send it as a response
         if (order) {
+            // If the order is completed and involves a donation, update the campaign amounts
+            if (order.status === 'completed') {
+                await campaignService.updateCampaignAmounts();
+                console.log('Campaign amounts updated successfully after completing the order.');
+            }
             res.json(order); // Return order data, including campaign progress
         } else {
             res.status(404).json({ message: 'Order not found' });

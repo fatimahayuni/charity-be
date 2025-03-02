@@ -22,7 +22,8 @@ async function getOrdersByUserId(userId) {
  */
 async function createOrder(userId, orderItems) {
     try {
-        return await orderData.createOrder(userId, orderItems);
+        const order = await orderData.createOrder(userId, orderItems);
+        return order;
     } catch (error) {
         console.error(`Error creating order for userId ${userId}:`, error);
         throw new Error('Failed to create order.');
@@ -36,7 +37,7 @@ async function createOrder(userId, orderItems) {
  * @returns {Promise<void>} - Confirmation of the update.
  */
 async function updateOrderSessionId(orderId, sessionId) {
-    console.log("orderId before try block", orderId) //todo problem starts here
+    console.log("8. orderId before try block in orderService.js", orderId)
     try {
         return await orderData.updateOrderSessionId(orderId, sessionId);
     } catch (error) {
@@ -52,6 +53,7 @@ async function updateOrderSessionId(orderId, sessionId) {
  */
 async function getOrderDetails(orderId) {
     try {
+        console.log(`🔍 Fetching order details for order ID: ${orderId}`);
         return await orderData.getOrderDetails(orderId);
     } catch (error) {
         console.error(`Error fetching order details for orderId ${orderId}:`, error);
@@ -67,7 +69,16 @@ async function getOrderDetails(orderId) {
  */
 async function updateOrderStatus(orderId, status) {
     try {
-        return await orderData.updateOrderStatus(orderId, status);
+        // Update the order status in the database
+        await orderData.updateOrderStatus(orderId, status);
+
+        // If the status is now 'completed', update order_campaigns
+        if (status === 'completed') {
+            // Lazy import to prevent circular dependency 
+            //todo do we still need this?
+            const campaignService = require('../services/campaignService');
+            await campaignService.insertDataIntoOrderCampaignsTable(orderId, orderData);
+        }
     } catch (error) {
         console.error(`Error updating status for orderId ${orderId}:`, error);
         throw new Error('Failed to update order status.');
